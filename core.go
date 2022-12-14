@@ -3,10 +3,10 @@ package log
 import (
 	"reflect"
 	"sync"
-
-	"go.uber.org/multierr"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	
+	"github.com/gozelle/multierr"
+	"github.com/gozelle/zap"
+	"github.com/gozelle/zap/zapcore"
 )
 
 var _ zapcore.Core = (*lockedMultiCore)(nil)
@@ -71,14 +71,14 @@ func (l *lockedMultiCore) Sync() error {
 func (l *lockedMultiCore) AddCore(core zapcore.Core) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-
+	
 	l.cores = append(l.cores, core)
 }
 
 func (l *lockedMultiCore) DeleteCore(core zapcore.Core) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-
+	
 	w := 0
 	for i := 0; i < len(l.cores); i++ {
 		if reflect.DeepEqual(l.cores[i], core) {
@@ -93,7 +93,7 @@ func (l *lockedMultiCore) DeleteCore(core zapcore.Core) {
 func (l *lockedMultiCore) ReplaceCore(original, replacement zapcore.Core) {
 	l.mu.Lock()
 	defer l.mu.Unlock()
-
+	
 	for i := 0; i < len(l.cores); i++ {
 		if reflect.DeepEqual(l.cores[i], original) {
 			l.cores[i] = replacement
@@ -104,7 +104,7 @@ func (l *lockedMultiCore) ReplaceCore(original, replacement zapcore.Core) {
 func newCore(format LogFormat, ws zapcore.WriteSyncer, level LogLevel) zapcore.Core {
 	encCfg := zap.NewProductionEncoderConfig()
 	encCfg.EncodeTime = zapcore.ISO8601TimeEncoder
-
+	
 	var encoder zapcore.Encoder
 	switch format {
 	case PlaintextOutput:
@@ -116,6 +116,6 @@ func newCore(format LogFormat, ws zapcore.WriteSyncer, level LogLevel) zapcore.C
 		encCfg.EncodeLevel = zapcore.CapitalColorLevelEncoder
 		encoder = zapcore.NewConsoleEncoder(encCfg)
 	}
-
+	
 	return zapcore.NewCore(encoder, ws, zap.NewAtomicLevelAt(zapcore.Level(level)))
 }

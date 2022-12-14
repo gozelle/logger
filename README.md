@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/badge/made%20by-Protocol%20Labs-blue.svg?style=flat-square)](https://protocol.ai)
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/)
-[![GoDoc](https://pkg.go.dev/badge/github.com/ipfs/go-log/v2.svg)](https://pkg.go.dev/github.com/ipfs/go-log/v2)
+[![GoDoc](https://pkg.go.dev/badge/github.com/gozelle/logging.svg)](https://pkg.go.dev/github.com/gozelle/logging)
 
 > The logging library used by go-ipfs
 

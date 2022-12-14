@@ -2,9 +2,9 @@ package log
 
 import (
 	"io"
-
-	"go.uber.org/multierr"
-	"go.uber.org/zap/zapcore"
+	
+	"github.com/gozelle/multierr"
+	"github.com/gozelle/zap/zapcore"
 )
 
 // A PipeReader is a reader that reads from the logger. It is synchronous
@@ -42,21 +42,21 @@ func NewPipeReader(opts ...PipeReaderOption) *PipeReader {
 		format: JSONOutput,
 		level:  LevelDebug,
 	}
-
+	
 	for _, o := range opts {
 		o.setOption(&opt)
 	}
-
+	
 	r, w := io.Pipe()
-
+	
 	p := &PipeReader{
 		r:      r,
 		closer: w,
 		core:   newCore(opt.format, zapcore.AddSync(w), opt.level),
 	}
-
+	
 	loggerCore.AddCore(p.core)
-
+	
 	return p
 }
 

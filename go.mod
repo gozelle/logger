@@ -1,14 +1,14 @@
-module github.com/ipfs/go-log/v2
+module github.com/gozelle/logging
 
 require (
-	github.com/mattn/go-isatty v0.0.14
-	go.uber.org/multierr v1.6.0
-	go.uber.org/zap v1.19.1
+	github.com/gozelle/go-isatty v0.0.16
+	github.com/gozelle/multierr v1.9.10
+	github.com/gozelle/zap v1.24.0
 )
 
 require (
-	go.uber.org/atomic v1.7.0 // indirect
-	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
+	github.com/gozelle/atomic v1.10.10 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 )
 
 go 1.17

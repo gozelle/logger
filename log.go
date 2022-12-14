@@ -4,9 +4,9 @@ package log
 
 import (
 	"time"
-
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	
+	"github.com/gozelle/zap"
+	"github.com/gozelle/zap/zapcore"
 )
 
 // StandardLogger provides API compatibility with standard printf loggers
@@ -39,10 +39,10 @@ func Logger(system string) *ZapEventLogger {
 		setuplog.Error("Missing name parameter")
 		system = "undefined"
 	}
-
+	
 	logger := getLogger(system)
 	skipLogger := logger.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar()
-
+	
 	return &ZapEventLogger{
 		system:        system,
 		SugaredLogger: *logger,
