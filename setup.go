@@ -3,7 +3,7 @@ package log
 import (
 	"errors"
 	"fmt"
-	"github.com/gozelle/go-isatty"
+	"github.com/gozelle/isatty"
 	"github.com/gozelle/zap"
 	"github.com/gozelle/zap/zapcore"
 	"os"

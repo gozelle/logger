@@ -1,7 +1,7 @@
 module github.com/gozelle/logging
 
 require (
-	github.com/gozelle/go-isatty v0.0.16
+	github.com/gozelle/isatty v0.0.17
 	github.com/gozelle/multierr v1.9.10
 	github.com/gozelle/zap v1.24.0
 )

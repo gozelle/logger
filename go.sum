@@ -6,12 +6,12 @@ github.com/gozelle/clock v1.3.0/go.mod h1:OWXqYiCfjbtbO0s++fUBgw946AtTJ9aqX9l5EE
 github.com/gozelle/go-difflib v1.0.0 h1:BIQXTH387TRKUtDGMTaPmoFKKWZQMRR4mSxxcPLOjXQ=
 github.com/gozelle/go-difflib v1.0.0/go.mod h1:PcDy306aUy3I8kB5ohutXpbhkgQlygtcBjf+pENv2gY=
 github.com/gozelle/go-internal v1.9.0/go.mod h1:o484tiDnf0hnhpY4OpWLmI0eWURobX0OX3YP1CBEzbU=
-github.com/gozelle/go-isatty v0.0.16 h1:Yv/bm0MIXIGp/c2OlUkJdMqE91UG6J9TvR+xxNbUg6k=
-github.com/gozelle/go-isatty v0.0.16/go.mod h1:QQirE+ksTYC6+NgW4FNh64uxCB7IBrgQT3UPC48x0FU=
 github.com/gozelle/go-spew v1.1.10 h1:kFDq5IDd/Wk3l7UutORhveCt5fUdW8b9afnDYtuHmEc=
 github.com/gozelle/go-spew v1.1.10/go.mod h1:qwUFQBhiE5zwtTAfe/m87+73t2jRbNHwGOvs+FgYx+8=
 github.com/gozelle/goleak v1.2.1 h1:e9B5tGt96ak+/85Nv0rj2DjoehP7FgqwlFvHlzIr5ts=
 github.com/gozelle/goleak v1.2.1/go.mod h1:J9UTVOIxTEuEgi7/t6NPnw4rI7S+ojBtqEhFDLlsAGY=
+github.com/gozelle/isatty v0.0.17 h1:1ka2GcKL1hNwIHIl5JFHfHOAzl+vXRH4Jx3dlFa88nM=
+github.com/gozelle/isatty v0.0.17/go.mod h1:u77FICFTx4IXjAoAaYstj8NvStDRVhwe3NNZCKzXVGo=
 github.com/gozelle/multierr v1.9.10 h1:EUU22u5Yx82/mQm55fH1WF6ztp0w4U+cZl9lCzuyUvE=
 github.com/gozelle/multierr v1.9.10/go.mod h1:4tC7qdet8CoxU9Q/Ha2bn5obpheqU7bTB9AENXwWzaI=
 github.com/gozelle/objx v0.5.10/go.mod h1:3muRr1Da1mCg3D+wYBicuZaHtGbvfLCgewfYJoz7cbs=
