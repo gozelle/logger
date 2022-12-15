@@ -1,6 +1,6 @@
-// Package log is the logging library used by IPFS & libp2p
+// package logging is the logging library used by IPFS & libp2p
 // (https://github.com/ipfs/go-ipfs).
-package log
+package logging
 
 import (
 	"time"

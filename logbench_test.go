@@ -1,4 +1,4 @@
-package log
+package logging
 
 import (
 	"sync"
@@ -16,7 +16,7 @@ func BenchmarkSimpleInfo(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-
+	
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
@@ -32,7 +32,7 @@ func BenchmarkFormatInfo(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-
+	
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < b.N; i++ {
@@ -47,18 +47,18 @@ func BenchmarkFormatInfoMulti(b *testing.B) {
 		b.Fatal(err)
 	}
 	var wg sync.WaitGroup
-
+	
 	goroutines := 16
-
+	
 	run := func() {
 		for i := 0; i < b.N/goroutines; i++ {
 			l.Infof("test %d %s", i, logString)
 		}
 		wg.Done()
 	}
-
+	
 	wg.Add(goroutines)
-
+	
 	b.ResetTimer()
 	b.ReportAllocs()
 	for i := 0; i < goroutines; i++ {

@@ -1,7 +1,7 @@
 //go:build !windows
 // +build !windows
 
-package log
+package logging
 
 import (
 	"path/filepath"
