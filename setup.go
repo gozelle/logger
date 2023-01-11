@@ -15,11 +15,6 @@ import (
 var config Config
 
 func init() {
-	//lvl, _ := LevelFromString("debug")
-	//SetAllLoggers(lvl)
-	//SetupLogging(Config{
-	//	Stdout: true,
-	//})
 	SetupLogging(configFromEnv())
 }
 
