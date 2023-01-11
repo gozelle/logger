@@ -285,7 +285,7 @@ func configFromEnv() Config {
 	cfg := Config{
 		Format:          ColorizedOutput,
 		Stdout:          true,
-		Stderr:          true,
+		Stderr:          false,
 		Level:           LevelDebug,
 		SubsystemLevels: map[string]LogLevel{},
 		Labels:          map[string]string{},
