@@ -15,6 +15,11 @@ import (
 var config Config
 
 func init() {
+	//lvl, _ := LevelFromString("debug")
+	//SetAllLoggers(lvl)
+	//SetupLogging(Config{
+	//	Stdout: true,
+	//})
 	SetupLogging(configFromEnv())
 }
 
@@ -284,6 +289,7 @@ func getLogger(name string) *zap.SugaredLogger {
 func configFromEnv() Config {
 	cfg := Config{
 		Format:          ColorizedOutput,
+		Stdout:          true,
 		Stderr:          true,
 		Level:           LevelDebug,
 		SubsystemLevels: map[string]LogLevel{},
