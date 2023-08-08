@@ -4,7 +4,7 @@
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/)
 [![GoDoc](https://pkg.go.dev/badge/github.com/gozelle/logger.svg)](https://pkg.go.dev/github.com/gozelle/logger)
 
-go-log wraps [zap](https://github.com/uber-go/zap) to provide a logger facade. logger manages logging
+logger wraps [zap](https://github.com/uber-go/zap) to provide a logger facade. logger manages logging
 instances and allows for their levels to be controlled individually.
 
 ## Install
