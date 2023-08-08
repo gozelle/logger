@@ -1,6 +1,6 @@
-// package logging is the logging library used by IPFS & libp2p
+// package logger is the logging library used by IPFS & libp2p
 // (https://github.com/ipfs/go-ipfs).
-package logging
+package logger
 
 import (
 	"time"
@@ -32,26 +32,26 @@ type EventLogger interface {
 	StandardLogger
 }
 
-// Logger retrieves an event logger by name
-func Logger(system string) *ZapEventLogger {
-	if len(system) == 0 {
+// NewLogger retrieves an event logger by name
+func NewLogger(module string) *Logger {
+	if len(module) == 0 {
 		setuplog := getLogger("setup-logger")
 		setuplog.Error("Missing name parameter")
-		system = "undefined"
+		module = "undefined"
 	}
 	
-	logger := getLogger(system)
+	logger := getLogger(module)
 	skipLogger := logger.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar()
 	
-	return &ZapEventLogger{
-		system:        system,
+	return &Logger{
+		system:        module,
 		SugaredLogger: *logger,
 		skipLogger:    *skipLogger,
 	}
 }
 
-// ZapEventLogger implements the EventLogger and wraps a go-logging Logger
-type ZapEventLogger struct {
+// Logger implements the EventLogger and wraps a go-logging Logger
+type Logger struct {
 	zap.SugaredLogger
 	// used to fix the caller location when calling Warning and Warningf.
 	skipLogger zap.SugaredLogger
@@ -60,13 +60,13 @@ type ZapEventLogger struct {
 
 // Warning is for compatibility
 // Deprecated: use Warn(args ...interface{}) instead
-func (logger *ZapEventLogger) Warning(args ...interface{}) {
+func (logger *Logger) Warning(args ...interface{}) {
 	logger.skipLogger.Warn(args...)
 }
 
 // Warningf is for compatibility
 // Deprecated: use Warnf(format string, args ...interface{}) instead
-func (logger *ZapEventLogger) Warningf(format string, args ...interface{}) {
+func (logger *Logger) Warningf(format string, args ...interface{}) {
 	logger.skipLogger.Warnf(format, args...)
 }
 
@@ -75,7 +75,7 @@ func FormatRFC3339(t time.Time) string {
 	return t.UTC().Format(time.RFC3339Nano)
 }
 
-func WithStacktrace(l *ZapEventLogger, level LogLevel) *ZapEventLogger {
+func WithStacktrace(l *Logger, level LogLevel) *Logger {
 	copyLogger := *l
 	copyLogger.SugaredLogger = *copyLogger.SugaredLogger.Desugar().
 		WithOptions(zap.AddStacktrace(zapcore.Level(level))).Sugar()
@@ -85,7 +85,7 @@ func WithStacktrace(l *ZapEventLogger, level LogLevel) *ZapEventLogger {
 
 // WithSkip returns a new logger that skips the specified number of stack frames when reporting the
 // line/file.
-func WithSkip(l *ZapEventLogger, skip int) *ZapEventLogger {
+func WithSkip(l *Logger, skip int) *Logger {
 	copyLogger := *l
 	copyLogger.SugaredLogger = *copyLogger.SugaredLogger.Desugar().
 		WithOptions(zap.AddCallerSkip(skip)).Sugar()

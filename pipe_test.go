@@ -1,4 +1,4 @@
-package logging
+package logger
 
 import (
 	"bytes"
@@ -99,5 +99,5 @@ func TestNewPipeReaderLevel(t *testing.T) {
 	if !strings.Contains(buf.String(), "shaggy") {
 		t.Errorf("got %q, wanted it to contain log output", buf.String())
 	}
-
+	
 }
