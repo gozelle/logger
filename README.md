@@ -4,23 +4,21 @@
 [![](https://img.shields.io/badge/project-IPFS-blue.svg?style=flat-square)](https://ipfs.io/)
 [![GoDoc](https://pkg.go.dev/badge/github.com/gozelle/logger.svg)](https://pkg.go.dev/github.com/gozelle/logger)
 
-> The logging library used by go-ipfs
-
-go-log wraps [zap](https://github.com/uber-go/zap) to provide a logging facade. go-log manages logging
+go-log wraps [zap](https://github.com/uber-go/zap) to provide a logger facade. logger manages logging
 instances and allows for their levels to be controlled individually.
 
 ## Install
 
 ```sh
-go get github.com/ipfs/go-log
+go get github.com/gozelle/logger
 ```
 
 ## Usage
 
-Once the package is imported under the name `logging`, an instance of `EventLogger` can be created like so:
+Once the package is imported under the name `logger`, an instance of `EventLogger` can be created like so:
 
 ```go
-var log = logging.Logger("subsystem name")
+var log = logger.NewLogger("subsystem name")
 ```
 
 It can then be used to emit log messages in plain printf-style messages at seven standard levels:
@@ -28,28 +26,28 @@ It can then be used to emit log messages in plain printf-style messages at seven
 Levels may be set for all loggers:
 
 ```go
-lvl, err := logging.LevelFromString("error")
+lvl, err := logger.LevelFromString("error")
 if err != nil {
-	panic(err)
+panic(err)
 }
-logging.SetAllLoggers(lvl)
+logger.SetAllLoggers(lvl)
 ```
 
 or individually:
 
 ```go
-err := logging.SetLogLevel("net:pubsub", "info")
+err := logger.SetLogLevel("net:pubsub", "info")
 if err != nil {
-	panic(err)
+panic(err)
 }
 ```
 
 or by regular expression:
 
 ```go
-err := logging.SetLogLevelRegex("net:.*", "info")
+err := logger.SetLogLevelRegex("net:.*", "info")
 if err != nil {
-	panic(err)
+panic(err)
 }
 ```
 
@@ -72,7 +70,8 @@ export GOLOG_LOG_LEVEL="error,subsystem1=info,subsystem2=debug"
 
 #### `GOLOG_FILE`
 
-Specifies that logs should be written to the specified file. If this option is _not_ specified, logs are written to standard error.
+Specifies that logs should be written to the specified file. If this option is _not_ specified, logs are written to
+standard error.
 
 ```bash
 export GOLOG_FILE="/path/to/my/file.log"
@@ -126,7 +125,8 @@ export GOLOG_LOG_LABELS="app=example_app,dc=sjc-1"
 
 Feel free to join in. All welcome. Open an [issue](https://github.com/ipfs/go-log/issues)!
 
-This repository falls under the IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
+This repository falls under the
+IPFS [Code of Conduct](https://github.com/ipfs/community/blob/master/code-of-conduct.md).
 
 ### Want to hack on IPFS?
 
