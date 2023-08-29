@@ -3,12 +3,12 @@ package logger
 import (
 	"errors"
 	"fmt"
-	"github.com/gozelle/isatty"
 	"os"
 	"regexp"
 	"strings"
 	"sync"
-	
+
+	"github.com/gozelle/isatty"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -30,13 +30,13 @@ const (
 	// GOLOG_* env vars take precedences over IPFS_* env vars.
 	envIPFSLogging    = "IPFS_LOGGING"
 	envIPFSLoggingFmt = "IPFS_LOGGING_FMT"
-	
+
 	envLogging    = "GOLOG_LOG_LEVEL"
 	envLoggingFmt = "GOLOG_LOG_FMT"
-	
+
 	envLoggingFile = "GOLOG_FILE" // /path/to/file
 	envLoggingURL  = "GOLOG_URL"  // url that will be processed by sink in the zap
-	
+
 	envLoggingOutput = "GOLOG_OUTPUT"     // possible values: stdout|stderr|file combine multiple values with '+'
 	envLoggingLabels = "GOLOG_LOG_LABELS" // comma-separated key-value pairs, i.e. "app=example_app,dc=sjc-1"
 )
@@ -52,25 +52,25 @@ const (
 type Config struct {
 	// Format overrides the format of the log output. Defaults to ColorizedOutput
 	Format LogFormat
-	
+
 	// Level is the default minimum enabled logging level.
 	Level LogLevel
-	
+
 	// SubsystemLevels are the default levels per-subsystem. When unspecified, defaults to Level.
 	SubsystemLevels map[string]LogLevel
-	
+
 	// Stderr indicates whether logs should be written to stderr.
 	Stderr bool
-	
+
 	// Stdout indicates whether logs should be written to stdout.
 	Stdout bool
-	
+
 	// File is a path to a file that logs will be written to.
 	File string
-	
+
 	// URL with schema supported by zap. Use zap.RegisterSink
 	URL string
-	
+
 	// Labels is a set of key-values to apply to all loggers
 	Labels map[string]string
 }
@@ -80,7 +80,7 @@ var ErrNoSuchLogger = errors.New("error: No such logger")
 
 var loggerMutex sync.RWMutex // guards access to global logger state
 
-// loggers is the set of loggers in the system
+// loggers is the set of loggers in the module
 var loggers = make(map[string]*zap.SugaredLogger)
 var levels = make(map[string]zap.AtomicLevel)
 
@@ -109,21 +109,21 @@ func GetConfig() Config {
 func SetupLogging(cfg Config) {
 	loggerMutex.Lock()
 	defer loggerMutex.Unlock()
-	
+
 	config = cfg
-	
+
 	primaryFormat = cfg.Format
 	defaultLevel = cfg.Level
-	
+
 	outputPaths := []string{}
-	
+
 	if cfg.Stderr {
 		outputPaths = append(outputPaths, "stderr")
 	}
 	if cfg.Stdout {
 		outputPaths = append(outputPaths, "stdout")
 	}
-	
+
 	// check if we log to a file
 	if len(cfg.File) > 0 {
 		if path, err := normalizePath(cfg.File); err != nil {
@@ -135,21 +135,21 @@ func SetupLogging(cfg Config) {
 	if len(cfg.URL) > 0 {
 		outputPaths = append(outputPaths, cfg.URL)
 	}
-	
+
 	ws, _, err := zap.Open(outputPaths...)
 	if err != nil {
 		panic(fmt.Sprintf("unable to open logging output: %v", err))
 	}
-	
+
 	newPrimaryCore := newCore(primaryFormat, ws, LevelDebug) // the main core needs to log everything.
-	
+
 	for k, v := range cfg.Labels {
 		newPrimaryCore = newPrimaryCore.With([]zap.Field{zap.String(k, v)})
 	}
-	
+
 	setPrimaryCore(newPrimaryCore)
 	setAllLoggers(defaultLevel)
-	
+
 	for name, level := range cfg.SubsystemLevels {
 		if leveler, ok := levels[name]; ok {
 			leveler.SetLevel(zapcore.Level(level))
@@ -164,7 +164,7 @@ func SetupLogging(cfg Config) {
 func SetPrimaryCore(core zapcore.Core) {
 	loggerMutex.Lock()
 	defer loggerMutex.Unlock()
-	
+
 	setPrimaryCore(core)
 }
 
@@ -186,7 +186,7 @@ func SetDebugLogging() {
 func SetAllLoggers(lvl LogLevel) {
 	loggerMutex.RLock()
 	defer loggerMutex.RUnlock()
-	
+
 	setAllLoggers(lvl)
 }
 
@@ -203,23 +203,23 @@ func SetLogLevel(name, level string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	// wildcard, change all
 	if name == "*" {
 		SetAllLoggers(lvl)
 		return nil
 	}
-	
+
 	loggerMutex.RLock()
 	defer loggerMutex.RUnlock()
-	
+
 	// Check if we have a logger by that name
 	if _, ok := levels[name]; !ok {
 		return ErrNoSuchLogger
 	}
-	
+
 	levels[name].SetLevel(zapcore.Level(lvl))
-	
+
 	return nil
 }
 
@@ -230,12 +230,12 @@ func SetLogLevelRegex(e, l string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	rem, err := regexp.Compile(e)
 	if err != nil {
 		return err
 	}
-	
+
 	loggerMutex.Lock()
 	defer loggerMutex.Unlock()
 	for name := range loggers {
@@ -252,7 +252,7 @@ func GetSubsystems() []string {
 	loggerMutex.RLock()
 	defer loggerMutex.RUnlock()
 	subs := make([]string, 0, len(loggers))
-	
+
 	for k := range loggers {
 		subs = append(subs, k)
 	}
@@ -276,10 +276,10 @@ func getLogger(name string) *zap.SugaredLogger {
 			).
 			Named(name).
 			Sugar()
-		
+
 		loggers[name] = log
 	}
-	
+
 	return log
 }
 
@@ -292,14 +292,14 @@ func configFromEnv() Config {
 		SubsystemLevels: map[string]LogLevel{},
 		Labels:          map[string]string{},
 	}
-	
+
 	format := os.Getenv(envLoggingFmt)
 	if format == "" {
 		format = os.Getenv(envIPFSLoggingFmt)
 	}
-	
+
 	var noExplicitFormat bool
-	
+
 	switch format {
 	case "color":
 		cfg.Format = ColorizedOutput
@@ -313,7 +313,7 @@ func configFromEnv() Config {
 		}
 		noExplicitFormat = true
 	}
-	
+
 	lvl := os.Getenv(envLogging)
 	if lvl == "" {
 		lvl = os.Getenv(envIPFSLogging)
@@ -334,14 +334,14 @@ func configFromEnv() Config {
 			}
 		}
 	}
-	
+
 	cfg.File = os.Getenv(envLoggingFile)
 	// Disable stderr logging when a file is specified
 	// https://github.com/ipfs/go-log/issues/83
 	if cfg.File != "" {
 		cfg.Stderr = false
 	}
-	
+
 	cfg.URL = os.Getenv(envLoggingURL)
 	output := os.Getenv(envLoggingOutput)
 	outputOptions := strings.Split(output, "+")
@@ -361,7 +361,7 @@ func configFromEnv() Config {
 			}
 		}
 	}
-	
+
 	// Check that neither of the requested Std* nor the file are TTYs
 	// At this stage (configFromEnv) we do not have a uniform list to examine yet
 	if noExplicitFormat &&
@@ -371,7 +371,7 @@ func configFromEnv() Config {
 		!(cfg.File != "" && pathIsTerm(cfg.File)) {
 		cfg.Format = PlaintextOutput
 	}
-	
+
 	labels := os.Getenv(envLoggingLabels)
 	if labels != "" {
 		labelKVs := strings.Split(labels, ",")
@@ -384,7 +384,7 @@ func configFromEnv() Config {
 			cfg.Labels[kv[0]] = kv[1]
 		}
 	}
-	
+
 	return cfg
 }
 
