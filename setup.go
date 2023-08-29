@@ -16,7 +16,9 @@ import (
 var config Config
 
 func init() {
-	SetupLogging(configFromEnv())
+	conf := configFromEnv()
+	conf.Level = LevelDebug
+	SetupLogging(conf)
 }
 
 // Logging environment variables
