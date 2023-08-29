@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 	
-	"github.com/gozelle/zap/zapcore"
+	"go.uber.org/zap/zapcore"
 )
 
 func TestNewCoreFormat(t *testing.T) {

@@ -5,8 +5,8 @@ package logger
 import (
 	"time"
 	
-	"github.com/gozelle/zap"
-	"github.com/gozelle/zap/zapcore"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 // StandardLogger provides API compatibility with standard printf loggers
@@ -32,26 +32,26 @@ type EventLogger interface {
 	StandardLogger
 }
 
-// NewLogger retrieves an event logger by name
-func NewLogger(module string) *Logger {
-	if len(module) == 0 {
+// Logger retrieves an event logger by name
+func Logger(system string) *ZapEventLogger {
+	if len(system) == 0 {
 		setuplog := getLogger("setup-logger")
 		setuplog.Error("Missing name parameter")
-		module = "undefined"
+		system = "undefined"
 	}
 	
-	logger := getLogger(module)
+	logger := getLogger(system)
 	skipLogger := logger.Desugar().WithOptions(zap.AddCallerSkip(1)).Sugar()
 	
-	return &Logger{
-		system:        module,
+	return &ZapEventLogger{
+		system:        system,
 		SugaredLogger: *logger,
 		skipLogger:    *skipLogger,
 	}
 }
 
-// Logger implements the EventLogger and wraps a go-logging Logger
-type Logger struct {
+// ZapEventLogger implements the EventLogger and wraps a go-logging Logger
+type ZapEventLogger struct {
 	zap.SugaredLogger
 	// used to fix the caller location when calling Warning and Warningf.
 	skipLogger zap.SugaredLogger
@@ -60,13 +60,13 @@ type Logger struct {
 
 // Warning is for compatibility
 // Deprecated: use Warn(args ...interface{}) instead
-func (logger *Logger) Warning(args ...interface{}) {
+func (logger *ZapEventLogger) Warning(args ...interface{}) {
 	logger.skipLogger.Warn(args...)
 }
 
 // Warningf is for compatibility
 // Deprecated: use Warnf(format string, args ...interface{}) instead
-func (logger *Logger) Warningf(format string, args ...interface{}) {
+func (logger *ZapEventLogger) Warningf(format string, args ...interface{}) {
 	logger.skipLogger.Warnf(format, args...)
 }
 
@@ -75,7 +75,7 @@ func FormatRFC3339(t time.Time) string {
 	return t.UTC().Format(time.RFC3339Nano)
 }
 
-func WithStacktrace(l *Logger, level LogLevel) *Logger {
+func WithStacktrace(l *ZapEventLogger, level LogLevel) *ZapEventLogger {
 	copyLogger := *l
 	copyLogger.SugaredLogger = *copyLogger.SugaredLogger.Desugar().
 		WithOptions(zap.AddStacktrace(zapcore.Level(level))).Sugar()
@@ -85,7 +85,7 @@ func WithStacktrace(l *Logger, level LogLevel) *Logger {
 
 // WithSkip returns a new logger that skips the specified number of stack frames when reporting the
 // line/file.
-func WithSkip(l *Logger, skip int) *Logger {
+func WithSkip(l *ZapEventLogger, skip int) *ZapEventLogger {
 	copyLogger := *l
 	copyLogger.SugaredLogger = *copyLogger.SugaredLogger.Desugar().
 		WithOptions(zap.AddCallerSkip(skip)).Sugar()

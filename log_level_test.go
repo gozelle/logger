@@ -8,7 +8,7 @@ import (
 
 func TestLogLevel(t *testing.T) {
 	const subsystem = "log-level-test"
-	logger := NewLogger(subsystem)
+	logger := Logger(subsystem)
 	reader := NewPipeReader()
 	done := make(chan struct{})
 	go func() {

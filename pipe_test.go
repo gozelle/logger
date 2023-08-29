@@ -2,12 +2,11 @@ package logger
 
 import (
 	"bytes"
+	"go.uber.org/zap"
 	"io"
 	"strings"
 	"sync"
 	"testing"
-	
-	"github.com/gozelle/zap"
 )
 
 func TestNewPipeReader(t *testing.T) {

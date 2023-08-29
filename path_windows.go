@@ -23,7 +23,7 @@ func normalizePath(p string) (string, error) {
 		// Return a UNC path.
 		p = "\\\\%3F\\" + p
 	}
-	
+
 	// This will return file:////?/c:/foobar
 	//
 	// Why? Because:

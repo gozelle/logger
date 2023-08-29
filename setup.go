@@ -4,12 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gozelle/isatty"
-	"github.com/gozelle/zap"
-	"github.com/gozelle/zap/zapcore"
 	"os"
 	"regexp"
 	"strings"
 	"sync"
+	
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var config Config
@@ -284,9 +285,8 @@ func getLogger(name string) *zap.SugaredLogger {
 func configFromEnv() Config {
 	cfg := Config{
 		Format:          ColorizedOutput,
-		Stdout:          true,
-		Stderr:          false,
-		Level:           LevelDebug,
+		Stderr:          true,
+		Level:           LevelError,
 		SubsystemLevels: map[string]LogLevel{},
 		Labels:          map[string]string{},
 	}

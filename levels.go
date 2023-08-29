@@ -1,6 +1,6 @@
 package logger
 
-import "github.com/gozelle/zap/zapcore"
+import "go.uber.org/zap/zapcore"
 
 // LogLevel represents a log severity level. Use the package variables as an
 // enum.

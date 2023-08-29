@@ -11,7 +11,7 @@ import (
 // Otherwise you test how fast your terminal can print.
 
 func BenchmarkSimpleInfo(b *testing.B) {
-	l := NewLogger("bench")
+	l := Logger("bench")
 	err := SetLogLevel("bench", "info")
 	if err != nil {
 		b.Fatal(err)
@@ -27,7 +27,7 @@ func BenchmarkSimpleInfo(b *testing.B) {
 var logString = "String, IDK what to write, let's punch a keyboard. jkdlsjklfdjfklsjfklsdjaflkdjfkdjsfkldjsfkdjklfjdslfjakdfjioerjieofjofdnvonoijdfneslkffjsdfljadljfdjkfjkf"
 
 func BenchmarkFormatInfo(b *testing.B) {
-	l := NewLogger("bench")
+	l := Logger("bench")
 	err := SetLogLevel("bench", "info")
 	if err != nil {
 		b.Fatal(err)
@@ -41,7 +41,7 @@ func BenchmarkFormatInfo(b *testing.B) {
 }
 
 func BenchmarkFormatInfoMulti(b *testing.B) {
-	l := NewLogger("bench")
+	l := Logger("bench")
 	err := SetLogLevel("bench", "info")
 	if err != nil {
 		b.Fatal(err)
