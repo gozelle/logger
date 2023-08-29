@@ -32,8 +32,8 @@ type EventLogger interface {
 	StandardLogger
 }
 
-// WithModule retrieves an event logger by name
-func WithModule(module string) *Logger {
+// NewLogger retrieves an logger by module name
+func NewLogger(module string) *Logger {
 	if len(module) == 0 {
 		setuplog := getLogger("setup-logger")
 		setuplog.Error("Missing name parameter")
