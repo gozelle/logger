@@ -1,4 +1,4 @@
-module github.com/gozelle/logger
+module github.com/gozelle/logger/v2
 
 require (
 	github.com/gozelle/isatty v0.0.17
