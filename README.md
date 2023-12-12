@@ -18,7 +18,7 @@ go get github.com/gozelle/logger
 Once the package is imported under the name `logger`, an instance of `Logger` can be created like so:
 
 ```go
-var log = logger.WithModule("module name")
+var log = logger.NewLogger("module name")
 ```
 
 It can then be used to emit log messages in plain printf-style messages at seven standard levels:
